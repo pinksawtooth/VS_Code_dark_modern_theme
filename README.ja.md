@@ -4,6 +4,8 @@
 
 Ghidra 12.0.4 PUBLIC 向けの VS Code Dark Modern 風テーマです。
 
+![VS Code Dark Modern テーマのスクリーンショット](assets/screenshot.png)
+
 テーマファイルと外部アイコンだけで構成しているため、Ghidra 本体の jar、アプリケーションバンドル、署名済みバイナリは変更しません。macOS のコード署名にも影響しない配布形式です。
 
 ## 内容

@@ -4,6 +4,8 @@ English | [日本語](README.ja.md)
 
 A VS Code Dark Modern-inspired theme for Ghidra 12.0.4 PUBLIC.
 
+![VS Code Dark Modern theme screenshot](assets/screenshot.png)
+
 This package is made only from a Ghidra theme file and external icon assets. It does not modify Ghidra's application bundle, jar files, or signed binaries, so it is safe to install without affecting macOS code signing.
 
 ## Contents
