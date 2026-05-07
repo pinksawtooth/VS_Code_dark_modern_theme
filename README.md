@@ -4,7 +4,7 @@ English | [日本語](README.ja.md)
 
 A VS Code Dark Modern-inspired theme for Ghidra 12.0.4 PUBLIC.
 
-![VS Code Dark Modern theme screenshot](assets/screenshot.png)
+![VS Code Dark Modern theme screenshot](https://raw.githubusercontent.com/pinksawtooth/VS_Code_dark_modern_theme/main/assets/screenshot.png)
 
 This package is made from a Ghidra theme file and external icon assets. It installs into the Ghidra user settings directory and does not modify Ghidra's application directory, jar files, or signed binaries.
 
