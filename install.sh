@@ -2,7 +2,21 @@
 set -eu
 
 REPO_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-GHIDRA_USER_DIR=${GHIDRA_USER_DIR:-"$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC"}
+
+if [ "${GHIDRA_USER_DIR:-}" = "" ]; then
+	case "$(uname -s)" in
+		Darwin*)
+			GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC"
+			;;
+		Linux*)
+			GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.0.4_PUBLIC"
+			;;
+		*)
+			printf 'Set GHIDRA_USER_DIR to your Ghidra user settings directory.\n' >&2
+			exit 1
+			;;
+	esac
+fi
 
 mkdir -p "$GHIDRA_USER_DIR/themes"
 mkdir -p "$GHIDRA_USER_DIR/images/vscode/codicons"

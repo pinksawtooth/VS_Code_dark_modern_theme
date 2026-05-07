@@ -54,6 +54,18 @@ To install into a custom Ghidra user settings directory:
 
 ## Install On macOS Or Linux
 
+On macOS, the installer defaults to:
+
+```text
+$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC
+```
+
+On Linux, the installer defaults to:
+
+```text
+${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.0.4_PUBLIC
+```
+
 ```sh
 git clone https://github.com/pinksawtooth/VS_Code_dark_modern_theme.git
 cd VS_Code_dark_modern_theme
@@ -77,9 +89,18 @@ GHIDRA_USER_DIR="<Ghidra user settings directory>" ./install.sh
 
 Pull the latest version and run the installer again:
 
+Windows:
+
 ```powershell
 git pull
 .\install.ps1
+```
+
+macOS or Linux:
+
+```sh
+git pull
+./install.sh
 ```
 
 ## Uninstall On Windows
@@ -93,9 +114,35 @@ Remove-Item "$GhidraUserDir\images\vscode\codicons" -Recurse -Force
 
 Restart Ghidra and choose another theme afterward.
 
+## Uninstall On macOS Or Linux
+
+Use the same Ghidra user settings directory that was used during installation.
+
+macOS:
+
+```sh
+GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC"
+
+rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
+rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
+```
+
+Linux:
+
+```sh
+GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.0.4_PUBLIC"
+
+rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
+rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
+```
+
+Restart Ghidra and choose another theme afterward.
+
 ## Notes
 
 - Ghidra stores user-installed themes under the user settings directory. On Windows, Ghidra's default settings directory is `%APPDATA%\ghidra\ghidra_<version>`.
+- On macOS, Ghidra's default settings directory is `$HOME/Library/ghidra/ghidra_<version>`.
+- On Linux, Ghidra's default settings directory is `${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_<version>`.
 - Even if Ghidra itself is installed in a separate application directory, copy this theme to the user settings directory so Ghidra can discover it.
 - This theme intentionally stays within Ghidra's theme system.
 - It does not modify Ghidra jars, application files, or signed files.

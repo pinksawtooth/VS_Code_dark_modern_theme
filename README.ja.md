@@ -54,6 +54,18 @@ Copy-Item .\images\vscode\codicons\* -Destination "$GhidraUserDir\images\vscode\
 
 ## macOS / Linux でのインストール
 
+macOS では、インストーラーの既定インストール先は次の場所です。
+
+```text
+$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC
+```
+
+Linux では、インストーラーの既定インストール先は次の場所です。
+
+```text
+${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.0.4_PUBLIC
+```
+
 ```sh
 git clone https://github.com/pinksawtooth/VS_Code_dark_modern_theme.git
 cd VS_Code_dark_modern_theme
@@ -77,9 +89,18 @@ GHIDRA_USER_DIR="<Ghidra user settings directory>" ./install.sh
 
 最新版を取得して、もう一度インストーラーを実行します。
 
+Windows:
+
 ```powershell
 git pull
 .\install.ps1
+```
+
+macOS / Linux:
+
+```sh
+git pull
+./install.sh
 ```
 
 ## Windows でのアンインストール
@@ -93,9 +114,35 @@ Remove-Item "$GhidraUserDir\images\vscode\codicons" -Recurse -Force
 
 その後、Ghidra を再起動して別のテーマを選択してください。
 
+## macOS / Linux でのアンインストール
+
+インストール時に使った Ghidra ユーザー設定ディレクトリを指定してください。
+
+macOS:
+
+```sh
+GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC"
+
+rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
+rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
+```
+
+Linux:
+
+```sh
+GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.0.4_PUBLIC"
+
+rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
+rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
+```
+
+その後、Ghidra を再起動して別のテーマを選択してください。
+
 ## 備考
 
 - Ghidra のユーザーインストールテーマはユーザー設定ディレクトリに保存されます。Windows の既定設定ディレクトリは `%APPDATA%\ghidra\ghidra_<version>` です。
+- macOS の既定設定ディレクトリは `$HOME/Library/ghidra/ghidra_<version>` です。
+- Linux の既定設定ディレクトリは `${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_<version>` です。
 - Ghidra 本体が別のアプリケーションディレクトリにある場合でも、このテーマは Ghidra が検出できるユーザー設定ディレクトリにコピーしてください。
 - このテーマは Ghidra のテーマ機能で扱える範囲に限定しています。
 - Ghidra 本体ファイル、jar、署名済みファイルは変更しません。
