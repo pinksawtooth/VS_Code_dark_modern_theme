@@ -6,10 +6,10 @@ REPO_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 if [ "${GHIDRA_USER_DIR:-}" = "" ]; then
 	case "$(uname -s)" in
 		Darwin*)
-			GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.0.4_PUBLIC"
+			GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.1.2_PUBLIC"
 			;;
 		Linux*)
-			GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.0.4_PUBLIC"
+			GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.2_PUBLIC"
 			;;
 		*)
 			printf 'Set GHIDRA_USER_DIR to your Ghidra user settings directory.\n' >&2

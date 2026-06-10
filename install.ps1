@@ -1,5 +1,5 @@
 param(
-    [string]$GhidraUserDir = (Join-Path $env:APPDATA 'ghidra\ghidra_12.0.4_PUBLIC')
+    [string]$GhidraUserDir = (Join-Path $env:APPDATA 'ghidra\ghidra_12.1.2_PUBLIC')
 )
 
 $ErrorActionPreference = 'Stop'
