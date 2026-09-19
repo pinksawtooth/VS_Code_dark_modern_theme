@@ -2,7 +2,7 @@
 
 English | [日本語](README.ja.md)
 
-A VS Code Dark Modern-inspired theme for Ghidra 12.1.2 PUBLIC.
+A VS Code Dark Modern-inspired theme for Ghidra 12.1.3 PUBLIC.
 
 ![VS Code Dark Modern theme screenshot](https://raw.githubusercontent.com/pinksawtooth/VS_Code_dark_modern_theme/main/assets/screenshot.png)
 
@@ -22,7 +22,7 @@ This package is made from a Ghidra theme file and external icon assets. It insta
 
 The quickest, cross-platform way — no manual copying, no shell scripts:
 
-1. Download `dist/vscode-dark-modern.theme.zip` from this repository.
+1. Download [vscode-dark-modern.theme.zip from the latest release](https://github.com/pinksawtooth/VS_Code_dark_modern_theme/releases/latest/download/vscode-dark-modern.theme.zip) (also available under `dist/` in this repository).
 2. In Ghidra, open `Edit` -> `Theme` -> `Import...`.
 3. Select the downloaded `vscode-dark-modern.theme.zip`.
 
@@ -38,7 +38,7 @@ The script installers below remain available if you prefer copying the files you
 
 ## Install On Windows
 
-For Windows and Ghidra 12.1.2 PUBLIC, run PowerShell from this repository directory:
+For Windows and Ghidra 12.1.3 PUBLIC, run PowerShell from this repository directory:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -48,13 +48,13 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 The installer copies the theme into:
 
 ```text
-%APPDATA%\ghidra\ghidra_12.1.2_PUBLIC
+%APPDATA%\ghidra\ghidra_12.1.3_PUBLIC
 ```
 
 Manual Windows installation:
 
 ```powershell
-$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.2_PUBLIC'
+$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.3_PUBLIC'
 
 New-Item -ItemType Directory -Force -Path "$GhidraUserDir\themes" | Out-Null
 New-Item -ItemType Directory -Force -Path "$GhidraUserDir\images\vscode\codicons" | Out-Null
@@ -63,7 +63,7 @@ Copy-Item .\themes\vscode-dark-modern.theme -Destination "$GhidraUserDir\themes\
 Copy-Item .\images\vscode\codicons\* -Destination "$GhidraUserDir\images\vscode\codicons\" -Recurse -Force
 ```
 
-If you use a different Ghidra version, replace `ghidra_12.1.2_PUBLIC` with your Ghidra user directory name.
+If you use a different Ghidra version, replace `ghidra_12.1.3_PUBLIC` with your Ghidra user directory name.
 
 To install into a custom Ghidra user settings directory:
 
@@ -76,13 +76,13 @@ To install into a custom Ghidra user settings directory:
 On macOS, the installer defaults to:
 
 ```text
-$HOME/Library/ghidra/ghidra_12.1.2_PUBLIC
+$HOME/Library/ghidra/ghidra_12.1.3_PUBLIC
 ```
 
 On Linux, the installer defaults to:
 
 ```text
-${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.2_PUBLIC
+${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.3_PUBLIC
 ```
 
 ```sh
@@ -125,7 +125,7 @@ git pull
 ## Uninstall On Windows
 
 ```powershell
-$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.2_PUBLIC'
+$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.3_PUBLIC'
 
 Remove-Item "$GhidraUserDir\themes\vscode-dark-modern.theme" -Force
 Remove-Item "$GhidraUserDir\images\vscode\codicons" -Recurse -Force
@@ -140,7 +140,7 @@ Use the same Ghidra user settings directory that was used during installation.
 macOS:
 
 ```sh
-GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.1.2_PUBLIC"
+GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.1.3_PUBLIC"
 
 rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
 rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
@@ -149,7 +149,7 @@ rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
 Linux:
 
 ```sh
-GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.2_PUBLIC"
+GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.3_PUBLIC"
 
 rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
 rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
@@ -165,7 +165,37 @@ Restart Ghidra and choose another theme afterward.
 - Even if Ghidra itself is installed in a separate application directory, copy this theme to the user settings directory so Ghidra can discover it.
 - This theme intentionally stays within Ghidra's theme system.
 - It does not modify Ghidra jars, application files, or signed files.
-- It was tested with Ghidra 12.1.2 PUBLIC. It also covers the theme keys new in 12.1.x (debugger breakpoint timeline, split active/inactive docking tabs, byte viewer edit cursors) while keeping the older 12.0.x keys, so it still loads on Ghidra 12.0.4.
+- The theme definitions and bundled icons are checked against Ghidra 12.1.3 PUBLIC. GUI behavior has not been re-tested on every OS. It also covers the theme keys new in 12.1.x (debugger breakpoint timeline, split active/inactive docking tabs, byte viewer edit cursors) while keeping the older 12.0.x keys, preserving compatibility with Ghidra 12.0.4 and 12.1.2. Use the custom settings-directory option when installing on those versions.
 - Colors follow the official VS Code Dark Modern palette: `#1F1F1F` editor, `#181818` chrome, `#2B2B2B` borders, `#313131` inputs, and `#0078D4` accent.
-- Icons are mapped by meaning, not by guesswork. `tools/icon-map.py` pairs each Ghidra concept with the codicon VS Code itself uses for the same thing — e.g. the debugger toolbar shows the real `debug-continue` / `debug-pause` / `debug-step-*` glyphs, an enabled breakpoint is a filled red dot, and Version Tracking accept/reject are a green check / red cross.
-- To regenerate the assets: `python3 tools/build-theme.py` rewrites the theme's `icon.*` lines and the render manifest, then `CODICONS_SRC=<codicons>/src/icons ./tools/generate-icons.sh` renders the PNGs from the `@vscode/codicons` SVG sources (requires ImageMagick with librsvg).
+- Listing / Decompiler preserve syntax colors while selecting text, so code selections use a darker blue `#193549` and searches use dark amber fills. Ordinary text inputs retain `#264F78` selections. Changed bytes and debugger values use amber `#D7BA7D`; error text uses a lighter red `#F48771`, separately from red error icons. Addresses are brighter than line numbers.
+- Function Graph uses green for fall-through, yellow for conditional jumps, and blue for unconditional jumps, sharing the Program Graph semantics. Highlighted paths are white. Bit-field cells use dark fills for readable labels.
+- Panel headers use a flat background with white focused titles and muted inactive titles. Selected document tabs use white text, the close icon brightens on hover, and the tab-list button uses a downward chevron. Popup and supported window borders use subtle grays. Fonts, click targets and docking behavior retain their existing settings.
+- Standard Swing tabs use FlatLaf's underline style. Ghidra's custom document tabs retain their own beveled borders; a theme cannot replace that renderer. Native title-bar integration also depends on the OS and application window code (see [FlatLaf window decorations](https://www.formdev.com/flatlaf/window-decorations/) and [macOS integration](https://www.formdev.com/flatlaf/macos/)).
+- Generic actions use Codicons; Ghidra-specific concepts use companion icons with the same palette and 16px grid. `tools/icon-map.py` manages the mapping, and editable SVG sources for the companions live in `tools/custom-icons/`.
+- External functions and thunks have distinct arrows; unions show overlapping storage and pointers an arrow into storage. Breakpoints use solid, outlined, half-filled and broken outlines to distinguish states, with a small exclamation overlay for inconsistencies. Graph directions and cycles, decompiler read-only/unreachable-code actions, and locked folders have dedicated shapes. The 16/24px application icons use simplified circuit traces.
+- To regenerate the assets: `python3 tools/build-theme.py` rewrites the theme's `icon.*` lines and the render manifest, then `CODICONS_SRC=<codicons>/src/icons ./tools/generate-icons.sh` renders the PNGs from Codicons and companion SVG sources (requires ImageMagick 7 with SVG support). SVG sizing uses a 96 DPI baseline to render directly at the output dimensions.
+
+## Building And Checking
+
+The builder looks for Ghidra 12.0.4, 12.1.2 and 12.1.3 under `~/ghidra/`, with newer definitions taking precedence. For other locations, set `GHIDRA_DIRS` to the Ghidra installation directory (not its user settings directory). Separate multiple installations with `:` on macOS/Linux or `;` on Windows.
+
+```sh
+GHIDRA_DIRS="/path/to/ghidra_12.1.3_PUBLIC" python3 tools/build-theme.py
+CODICONS_SRC="/path/to/codicons/package/src/icons" ./tools/generate-icons.sh
+./tools/build-theme-zip.sh
+python3 -m unittest discover -s tests -v
+```
+
+Use `@vscode/codicons` **0.0.45**, matching the bundled assets. The builder stops if it cannot read Ghidra icon definitions; the renderer checks all required Codicons and `tools/custom-icons/` SVG inputs and stages the rendered files before copying them into the asset directory.
+
+The editor uses Java's logical `Monospaced` font on every OS. Active filters use an accent-colored icon. Version Tracking status icons preserve their individual cells, and progress frames use Ghidra's rotation modifiers; these modifiers survive theme regeneration.
+
+With a JDK and a local Ghidra installation, run the integration check as well:
+
+```sh
+python3 tests/check_ghidra.py "/path/to/ghidra_12.1.3_PUBLIC"
+```
+
+It imports the ZIP using Ghidra's reader in a temporary settings directory, checks rendered status cells, animation frames, distinct companion shapes, breakpoint overlay placement and close-icon hover feedback, and writes `build/theme-check.png`, `build/icons-check.png`, `build/colors-check.png` and `build/windows-check.png` for visual inspection. These are offscreen samples, not live GUI screenshots. The window preview shows header color samples, Ghidra's actual tab-border renderer and standard Swing tabs; it does not test native title bars or drag/resize behavior.
+
+Color tests require at least 4.5:1 for critical text/background pairs and a 3:1 regression floor for syntax-preserving selection/search backgrounds. The latter is a visibility safeguard, not a claim of accessibility compliance for the whole theme.

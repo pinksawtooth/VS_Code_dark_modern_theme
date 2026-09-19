@@ -2,18 +2,20 @@
 """Rebuild the icon.* block of the theme + the codicon render manifest.
 
 Pipeline:
-  1. Parse every Ghidra *.theme.properties (12.0.4 + 12.1.2) to learn the
+  1. Parse every Ghidra *.theme.properties (12.0.4 / 12.1.2 / 12.1.3) to learn the
      default icon each icon.* key resolves to.
   2. Map each key to a codicon PNG via tools/icon-map.py (by original icon
      basename), falling back to the current theme's choice so coverage never
      regresses.
   3. Emit:
-       - build/icon-manifest.tsv : <png>\t<svg-stem>\t<color>  (for the renderer)
+       - build/icon-manifest.tsv : <png>\t<svg-stem>\t<color>  (for the renderer;
+         ghidra-* stems use the local tools/custom-icons SVG companions)
        - rewrites themes/vscode-dark-modern.theme icon.* lines in place.
 
 Run from the repo root:  python3 tools/build-theme.py
 Environment:
-  GHIDRA_DIRS   : colon-separated Ghidra install dirs (default: the two known)
+  GHIDRA_DIRS   : Ghidra install dirs separated by os.pathsep (: on Unix, ; on
+                  Windows). Defaults to supported installs under ~/ghidra/.
 """
 import os
 import re
@@ -31,11 +33,13 @@ icon_map = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(icon_map)
 SEMANTIC_MAP = icon_map.SEMANTIC_MAP
 KEY_OVERRIDES = icon_map.KEY_OVERRIDES
+KEY_MODIFIERS = icon_map.KEY_MODIFIERS
 
 # Color suffix -> render color. Stem is the PNG name minus a trailing suffix.
 COLOR_SUFFIX = {
     "success": "#89D185", "error": "#F14C4C", "warning": "#CCA700",
     "accent": "#3794FF", "disabled": "#6A6A6A", "bp": "#E51400",
+    "active": "#FFFFFF",
 }
 NEUTRAL = "#CCCCCC"
 
@@ -50,27 +54,36 @@ def split_color(png_stem):
 
 def ghidra_dirs():
     env = os.environ.get("GHIDRA_DIRS")
-    if env:
-        return env.split(":")
-    home = os.path.expanduser("~")
-    cands = [
-        "/Users/samsepi0l/ghidra/ghidra_12.0.4_PUBLIC",
-        "/Users/samsepi0l/ghidra/ghidra_12.1.2_PUBLIC",
-    ]
-    return [d for d in cands if os.path.isdir(d)]
+    if env is not None:
+        dirs = [os.path.expanduser(d) for d in env.split(os.pathsep) if d]
+        for d in dirs:
+            if not os.path.isdir(d):
+                raise ValueError(f"Ghidra directory does not exist: {d}")
+    else:
+        base = os.path.join(os.path.expanduser("~"), "ghidra")
+        dirs = [os.path.join(base, f"ghidra_{v}_PUBLIC")
+                for v in ("12.0.4", "12.1.2", "12.1.3")]
+        dirs = [d for d in dirs if os.path.isdir(d)]
+    if not dirs:
+        raise ValueError("No Ghidra installation found. Set GHIDRA_DIRS to your Ghidra install directory.")
+    return dirs
 
 
 def load_defaults():
     """key -> raw default icon value (last version wins)."""
     defaults = {}
     for d in ghidra_dirs():
-        for f in glob.glob(os.path.join(d, "**", "*.theme.properties"), recursive=True):
+        version_defaults = {}
+        for f in sorted(glob.glob(os.path.join(d, "**", "*.theme.properties"), recursive=True)):
             with open(f, errors="replace") as fh:
                 for line in fh:
                     line = line.strip()
                     m = re.match(r"^(icon\.[^=\s]+)\s*=\s*(.+?)\s*(?://.*)?$", line)
                     if m:
-                        defaults[m.group(1)] = m.group(2).strip()
+                        version_defaults[m.group(1)] = m.group(2).strip()
+        if not version_defaults:
+            raise ValueError(f"No icon definitions found in {d}. Set GHIDRA_DIRS to a Ghidra install directory.")
+        defaults.update(version_defaults)
     return defaults
 
 
@@ -110,17 +123,20 @@ def resolve_default(key, defaults, seen=None):
 
 
 def load_current_theme_map():
-    """key -> current png name, from the theme on disk (fallback source)."""
+    """key -> (PNG stem, modifiers), from the theme on disk (fallback source)."""
     cur = {}
     for line in open(THEME):
-        m = re.match(r"^(icon\.[^=\s]+)\s*=\s*\[EXTERNAL\]images/vscode/codicons/(.+)\.png\s*$", line.strip())
+        m = re.match(r"^(icon\.[^=\s]+)\s*=\s*\[EXTERNAL\]images/vscode/codicons/([^/\s]+?)\.png(.*)$", line.strip())
         if m:
-            cur[m.group(1)] = m.group(2)
+            cur[m.group(1)] = (m.group(2), m.group(3).strip())
     return cur
 
 
 def main():
-    defaults = load_defaults()
+    try:
+        defaults = load_defaults()
+    except (ValueError, OSError) as exc:
+        sys.exit(f"Cannot build theme: {exc}")
     current = load_current_theme_map()
 
     # All icon.* keys we should emit = union of keys present in current theme
@@ -145,9 +161,9 @@ def main():
         if key in SEMANTIC_MAP:
             png_for[key] = SEMANTIC_MAP[key]; stats["semantic"] += 1; continue
         if key in current:
-            png_for[key] = current[key]; stats["fallback"] += 1
+            png_for[key] = current[key][0]; stats["fallback"] += 1
             if base not in ("blank",) and resolved:
-                unmapped.append((key, base, current[key]))
+                unmapped.append((key, base, current[key][0]))
         else:
             stats["empty"] += 1
     # Keep EMPTY icons truly empty
@@ -167,12 +183,16 @@ def main():
 
     # --- rewrite theme icon lines ------------------------------------------
     lines = open(THEME).read().splitlines(keepends=True)
-    out_lines, written, seen_keys = [], set(), set()
+    out_lines, seen_keys = [], set()
     icon_line = re.compile(r"^(icon\.[^=\s]+)\s*=")
     # Build the canonical icon block text once, sorted, to drop in place of the
     # first contiguous icon.* run. We replace each existing icon line with its
     # new value and drop the rest, then append any brand-new keys after the run.
-    new_value = {k: f"[EXTERNAL]{CODICON_DIR}/{png_for[k]}.png" for k in png_for}
+    new_value = {
+        k: f"[EXTERNAL]{CODICON_DIR}/{png_for[k]}.png" +
+           KEY_MODIFIERS.get(k, current.get(k, (None, ""))[1])
+        for k in png_for
+    }
 
     in_block = False
     for line in lines:

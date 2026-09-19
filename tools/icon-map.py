@@ -12,7 +12,7 @@ same concept -- e.g. Ghidra's resume.png -> debug-continue, breakpoint-enable
 
 Color suffixes on a PNG name select the render color (see generate-icons.sh):
   -success green | -error red | -warning yellow | -accent blue
-  -disabled grey | -bp breakpoint-red | (none) neutral #CCCCCC
+  -disabled grey | -bp breakpoint-red | -active white | (none) neutral #CCCCCC
 """
 
 # Normalized original-icon basename  ->  PNG asset name (codicon + color suffix).
@@ -82,14 +82,14 @@ SEMANTIC_MAP = {
 
     # ---- Breakpoints (VS Code: filled dot = set, hollow = disabled) ------
     "breakpoint-enable": "circle-filled-bp", "breakpoints-enable-all": "circle-filled-bp",
-    "breakpoint-enable-ineff": "circle-disabled",
+    "breakpoint-enable-ineff": "ghidra-breakpoint-pending-bp",
     "breakpoint-disable": "circle-disabled", "breakpoints-disable-all": "circle-disabled",
-    "breakpoint-disable-ineff": "circle-disabled",
+    "breakpoint-disable-ineff": "ghidra-breakpoint-disabled-pending-disabled",
     "breakpoint-clear": "close", "breakpoints-clear-all": "trash",
-    "breakpoint-mixed": "debug-breakpoint-conditional-error",
-    "breakpoint-mixed-ineff": "debug-breakpoint-unsupported",
-    "breakpoint-overlay-inconsistent": "debug-breakpoint-unsupported",
-    "breakpoints-make-effective": "debug-breakpoint-function-error",
+    "breakpoint-mixed": "ghidra-breakpoint-mixed-bp",
+    "breakpoint-mixed-ineff": "ghidra-breakpoint-mixed-pending-bp",
+    "breakpoint-overlay-inconsistent": "ghidra-breakpoint-inconsistent-warning",
+    "breakpoints-make-effective": "ghidra-breakpoint-apply-success",
     "disabledCode": "circle-disabled",
 
     # ---- Process / thread / register / memory ----------------------------
@@ -117,15 +117,15 @@ SEMANTIC_MAP = {
     "view_left_right": "split-vertical", "view_bottom": "split-horizontal",
     "function_graph": "type-hierarchy", "function_graph_code_flow": "type-hierarchy",
     "function_graph_flowchart": "type-hierarchy", "function_graph_curvey": "type-hierarchy",
-    "fgin": "type-hierarchy", "fgout": "type-hierarchy", "fginout": "type-hierarchy",
-    "fgloop": "type-hierarchy", "fgloopall": "type-hierarchy", "fgpaths": "type-hierarchy",
-    "fgrevblock": "type-hierarchy", "fgblock": "arrow-right",
+    "fgin": "ghidra-flow-in", "fgout": "ghidra-flow-out", "fginout": "ghidra-flow-through",
+    "fgloop": "ghidra-flow-cycle", "fgloopall": "ghidra-flow-cycles", "fgpaths": "ghidra-flow-all",
+    "fgrevblock": "ghidra-flow-reverse", "fgblock": "ghidra-flow-forward",
     "graph.layout.default": "layout", "color_swatch.png": "symbol-color",
     "house": "home", "Lasso": "list-selection",
 
     # ---- Filters / lightbulb / sort --------------------------------------
-    "filter_off": "filter", "filter_on": "filter", "filter_matched": "filter",
-    "FilterArrays": "filter", "FilterPointers": "filter", "view-filter": "filter",
+    "filter_off": "filter", "filter_on": "filter-accent", "filter_matched": "filter-accent",
+    "FilterArrays": "filter-accent", "FilterPointers": "filter-accent", "view-filter": "filter",
     "lightbulb": "lightbulb", "lightbulb_off": "lightbulb",
 
     # ---- Bookmarks / flags / markers -------------------------------------
@@ -136,7 +136,7 @@ SEMANTIC_MAP = {
 
     # ---- Eyes / hover / pin ----------------------------------------------
     "hoverOff": "eye-closed-disabled", "hoverOn": "eye-accent",
-    "pin": "pin", "icon.base.pinned": "pinned",
+    "pin": "pin", "icon.base.pinned": "pin",
 
     # ---- Locks / security / users ----------------------------------------
     "lock": "lock", "unlock": "unlock", "kgpg": "lock", "key": "key",
@@ -165,10 +165,12 @@ SEMANTIC_MAP = {
 
     # ---- Data types -------------------------------------------------------
     "cstruct": "symbol-structure", "defaultDt": "symbol-structure",
-    "typedef": "symbol-interface", "enum": "symbol-enum", "cUnion": "symbol-structure",
+    "typedef": "symbol-interface", "enum": "symbol-enum", "cUnion": "ghidra-type-union",
+    "fingerPointer": "ghidra-type-pointer",
     "Array": "symbol-array", "BookShelf": "library", "BookShelfOpen": "library",
     "functionDef": "symbol-method", "F": "symbol-method", "FunctionScope": "symbol-method",
-    "ExternalFunction": "symbol-method", "ThunkFunction.dark": "symbol-method",
+    "ExternalFunction": "ghidra-function-external", "ThunkFunction.dark": "ghidra-function-thunk",
+    "ThunkFunction": "ghidra-function-thunk",
     "LocalVariable": "symbol-variable", "Parameter": "symbol-parameter",
     "Namespace.dark": "symbol-namespace", "class": "symbol-class",
     "L": "symbol-key", "label": "symbol-key",
@@ -201,13 +203,13 @@ SEMANTIC_MAP = {
 
     # ---- Misc / tables ----------------------------------------------------
     "table": "table", "info_small.png": "table",
-    "eliminateUnreachable": "list-tree", "decompileFunction": "list-tree",
-    "sitemap_color": "list-tree", "plasma": "list-tree", "readOnly": "list-tree",
+    "eliminateUnreachable": "ghidra-code-unreachable", "decompileFunction": "code",
+    "sitemap_color": "list-tree", "plasma": "list-tree", "readOnly": "ghidra-code-lock",
     "icon.search": "search", "icon.home": "home", "icon.warning": "warning-warning",
     "exec": "play", "function": "symbol-method", "icon.run": "play",
     "gate-set": "symbol-misc",
 
-    # ---- Progress / busy frames ------------------------------------------
+    # ---- Progress / busy frames (rotation is assigned by KEY_MODIFIERS) ---
     "hourglass24_01": "loading", "hourglass24_02": "loading", "hourglass24_03": "loading",
     "hourglass24_04": "loading", "hourglass24_05": "loading", "hourglass24_06": "loading",
     "hourglass24_07": "loading", "hourglass24_08": "loading", "hourglass24_09": "loading",
@@ -219,6 +221,7 @@ SEMANTIC_MAP = {
     # ---- Folder corrections ----------------------------------------------
     "closedSmallFolder": "folder", "openSmallFolder": "folder-opened",
     "closedDescendantsInView": "folder", "disabledClosedFolder": "folder",
+    "closedFolderCheckedOut": "ghidra-folder-lock", "openFolderCheckedOut": "ghidra-folder-open-lock",
     "phone": "device-mobile",
 }
 
@@ -242,6 +245,9 @@ KEY_OVERRIDES = {
     "icon.zoom.in": "zoom-in",
     "icon.zoom.out": "zoom-out",
     "icon.help": "question",
+    # Ghidra's GTab is a custom widget, not a FlatLaf JTabbedPane.
+    "icon.widget.tabs.close.highlight": "close-active",
+    "icon.widget.tabs.list": "chevron-down",
     "icon.font": "text-size",
     "icon.navigate.in": "arrow-right",
     "icon.navigate.out": "arrow-left",
@@ -260,12 +266,44 @@ KEY_OVERRIDES = {
     "icon.plugin.composite.editor.move.up": "arrow-up",
     "icon.plugin.datatypes.enum": "symbol-enum",
     "icon.plugin.datatypes.structure": "symbol-structure",
-    "icon.plugin.datatypes.union": "symbol-structure",
+    "icon.plugin.datatypes.union": "ghidra-type-union",
     "icon.plugin.datatypes.typedef": "symbol-interface",
-    "icon.plugin.datatypes.pointer": "symbol-numeric",
+    "icon.plugin.datatypes.pointer": "ghidra-type-pointer",
     "icon.plugin.datatypes.function": "symbol-method",
+    "icon.plugin.datatypes.filter.pointers.off": "ghidra-type-pointer",
+    "icon.plugin.datatypes.filter.pointers.on": "ghidra-filter-pointer-accent",
+    "icon.plugin.datatypes.filter.arrays.on": "ghidra-filter-array-accent",
+    "icon.plugin.datatypes.util.closed.folder.disabled": "folder-disabled",
+    "icon.plugin.datatypes.util.open.folder.disabled": "folder-opened-disabled",
+    "icon.version.tracking.filtered": "filter-accent",
+    "icon.version.tracking.unfiltered": "filter",
+    "icon.version.tracking.match.table.markup.status.not.applied": "circle-warning",
+    "icon.version.tracking.match.table.markup.status.applied": "check-success",
+    "icon.version.tracking.match.table.markup.status.rejected": "close-error",
+    "icon.version.tracking.match.table.markup.status.ignored": "circle",
+    "icon.version.tracking.match.table.markup.status.error": "error-error",
+    "icon.version.tracking.match.table.markup.status.disabled": "circle-disabled",
     "icon.run": "play",
 }
+
+# These icons are composed by Ghidra into a 45x16 status strip. Keep the
+# original 8x8 cells and 9-pixel spacing; plain 16x16 overrides overlap.
+KEY_MODIFIERS = {
+    f"icon.version.tracking.match.table.markup.status.{state}":
+        f"[size(8,8)][move({index * 9},4)]"
+    for index, state in enumerate(("not.applied", "applied", "rejected", "ignored", "error"))
+}
+# Ghidra itself positions the disabled cells.
+KEY_MODIFIERS["icon.version.tracking.match.table.markup.status.disabled"] = "[size(8,8)]"
+
+# AnimatedIcon swaps frames; rotating a shared glyph gives each frame a
+# different image without shipping duplicate PNGs. Rotation is in degrees.
+for prefix, count, size in (("icon.task.progress", 7, 16),
+                            ("icon.task.progress.hourglass", 11, 24)):
+    for index in range(count):
+        key = f"{prefix}.{index + 1}"
+        KEY_OVERRIDES[key] = "loading"
+        KEY_MODIFIERS[key] = f"[size({size},{size})][rotate({index * 360 // count})]"
 
 if __name__ == "__main__":
     # quick self-check
