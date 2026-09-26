@@ -2,6 +2,7 @@ name = VS Code Dark Modern
 lookAndFeel = Flat Dark
 useDarkDefaults = true
 
+# Target: Ghidra 12.1.4 PUBLIC; retains legacy theme keys for older versions.
 # VS Code Dark Modern palette
 # Values follow the official dark_modern.json: editor #1F1F1F, chrome
 # (side bar / title bar / panel / status bar) #181818, borders #2B2B2B,

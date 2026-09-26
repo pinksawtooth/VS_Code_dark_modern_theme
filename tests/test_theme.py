@@ -209,7 +209,7 @@ class BuildTests(unittest.TestCase):
         shutil.copytree(ROOT / "tools", self.repo / "tools")
         shutil.copytree(ROOT / "themes", self.repo / "themes")
         self.theme = self.repo / "themes" / THEME.name
-        self.install = self.root / "ghidra_12.1.3_PUBLIC"
+        self.install = self.root / "ghidra_12.1.4_PUBLIC"
         self.install.mkdir()
         (self.install / "test.theme.properties").write_text("icon.add = add.png\n")
 
@@ -237,10 +237,14 @@ class BuildTests(unittest.TestCase):
         base = self.root / "ghidra"
         base.mkdir()
         target = base / self.install.name
-        target.mkdir()
+        shutil.copytree(self.install, target)
+        older = base / "ghidra_12.1.3_PUBLIC"
+        older.mkdir()
+        (older / "test.theme.properties").write_text("icon.add = older-add.png\n")
         with patch.dict(os.environ, {}, clear=True), patch.object(
                 builder.os.path, "expanduser", return_value=str(self.root)):
-            self.assertIn(str(target), builder.ghidra_dirs())
+            self.assertEqual(builder.ghidra_dirs(), [str(older), str(target)])
+            self.assertEqual(builder.load_defaults()["icon.add"], "add.png")
 
     def test_rebuild_keeps_modifiers_and_legacy_keys(self):
         with self.theme.open("a") as out:
@@ -312,7 +316,7 @@ class BuildTests(unittest.TestCase):
         self.assertFalse(log.exists())
 
     @unittest.skipUnless(os.name == "posix", "Requires a POSIX shell")
-    def test_install_targets_12_1_3_and_accepts_custom_directory(self):
+    def test_install_targets_12_1_4_and_accepts_custom_directory(self):
         binary = self.root / "bin"
         binary.mkdir()
         uname = binary / "uname"
@@ -327,7 +331,7 @@ class BuildTests(unittest.TestCase):
                 current_env = dict(env)
                 if target is not None:
                     current_env["GHIDRA_USER_DIR"] = str(target)
-                expected = target or config / "ghidra/ghidra_12.1.3_PUBLIC"
+                expected = target or config / "ghidra/ghidra_12.1.4_PUBLIC"
                 result = subprocess.run(["sh", str(ROOT / "install.sh")], env=current_env,
                                         capture_output=True, text=True)
                 self.assertEqual(result.returncode, 0, result.stderr)

@@ -2,7 +2,7 @@
 
 [English](README.md) | 日本語
 
-Ghidra 12.1.3 PUBLIC 向けの VS Code Dark Modern 風テーマです。
+Ghidra 12.1.4 PUBLIC 向けの VS Code Dark Modern 風テーマです。
 
 ![VS Code Dark Modern テーマのスクリーンショット](https://github.com/user-attachments/assets/5767b4f8-0b72-4dad-afc1-47850b6349c4)
 
@@ -38,7 +38,7 @@ Ghidra が同梱アイコンをユーザー設定ディレクトリへ展開し�
 
 ## Windows でのインストール
 
-Windows / Ghidra 12.1.3 PUBLIC では、このリポジトリのディレクトリで PowerShell を開いて実行します。
+Windows / Ghidra 12.1.4 PUBLIC では、このリポジトリのディレクトリで PowerShell を開いて実行します。
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
@@ -48,13 +48,13 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 インストーラーはテーマを次の場所にコピーします。
 
 ```text
-%APPDATA%\ghidra\ghidra_12.1.3_PUBLIC
+%APPDATA%\ghidra\ghidra_12.1.4_PUBLIC
 ```
 
 手動でインストールする場合:
 
 ```powershell
-$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.3_PUBLIC'
+$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.4_PUBLIC'
 
 New-Item -ItemType Directory -Force -Path "$GhidraUserDir\themes" | Out-Null
 New-Item -ItemType Directory -Force -Path "$GhidraUserDir\images\vscode\codicons" | Out-Null
@@ -63,7 +63,7 @@ Copy-Item .\themes\vscode-dark-modern.theme -Destination "$GhidraUserDir\themes\
 Copy-Item .\images\vscode\codicons\* -Destination "$GhidraUserDir\images\vscode\codicons\" -Recurse -Force
 ```
 
-別の Ghidra バージョンで使う場合は、`ghidra_12.1.3_PUBLIC` を自分の Ghidra ユーザー設定ディレクトリ名に置き換えてください。
+別の Ghidra バージョンで使う場合は、`ghidra_12.1.4_PUBLIC` を自分の Ghidra ユーザー設定ディレクトリ名に置き換えてください。
 
 インストール先を明示する場合:
 
@@ -76,13 +76,13 @@ Copy-Item .\images\vscode\codicons\* -Destination "$GhidraUserDir\images\vscode\
 macOS では、インストーラーの既定インストール先は次の場所です。
 
 ```text
-$HOME/Library/ghidra/ghidra_12.1.3_PUBLIC
+$HOME/Library/ghidra/ghidra_12.1.4_PUBLIC
 ```
 
 Linux では、インストーラーの既定インストール先は次の場所です。
 
 ```text
-${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.3_PUBLIC
+${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.4_PUBLIC
 ```
 
 ```sh
@@ -125,7 +125,7 @@ git pull
 ## Windows でのアンインストール
 
 ```powershell
-$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.3_PUBLIC'
+$GhidraUserDir = Join-Path $env:APPDATA 'ghidra\ghidra_12.1.4_PUBLIC'
 
 Remove-Item "$GhidraUserDir\themes\vscode-dark-modern.theme" -Force
 Remove-Item "$GhidraUserDir\images\vscode\codicons" -Recurse -Force
@@ -140,7 +140,7 @@ Remove-Item "$GhidraUserDir\images\vscode\codicons" -Recurse -Force
 macOS:
 
 ```sh
-GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.1.3_PUBLIC"
+GHIDRA_USER_DIR="$HOME/Library/ghidra/ghidra_12.1.4_PUBLIC"
 
 rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
 rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
@@ -149,7 +149,7 @@ rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
 Linux:
 
 ```sh
-GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.3_PUBLIC"
+GHIDRA_USER_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/ghidra/ghidra_12.1.4_PUBLIC"
 
 rm -f "$GHIDRA_USER_DIR/themes/vscode-dark-modern.theme"
 rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
@@ -165,7 +165,7 @@ rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
 - Ghidra 本体が別のアプリケーションディレクトリにある場合でも、このテーマは Ghidra が検出できるユーザー設定ディレクトリにコピーしてください。
 - このテーマは Ghidra のテーマ機能で扱える範囲に限定しています。
 - Ghidra 本体ファイル、jar、署名済みファイルは変更しません。
-- Ghidra 12.1.3 PUBLIC のテーマ定義と同梱アイコンを検証しています。全 OS での GUI 動作の再確認は行っていません。12.1.x で追加されたテーマキー（デバッガのブレークポイントタイムライン、ドッキングタブの active/inactive 分離、バイトビューアの編集カーソル）にも対応しつつ、12.0.x の旧キーも残しているため Ghidra 12.0.4 / 12.1.2 との互換性も維持しています。旧バージョンへインストールする際は、インストール先を明示してください。
+- Ghidra 12.1.4 PUBLIC のテーマ定義と同梱アイコンを検証しています。全 OS での GUI 動作の再確認は行っていません。12.1.x で追加されたテーマキー（デバッガのブレークポイントタイムライン、ドッキングタブの active/inactive 分離、バイトビューアの編集カーソル）にも対応しつつ、12.0.x の旧キーも残しているため Ghidra 12.0.4 / 12.1.2 / 12.1.3 との互換性も維持しています。旧バージョンへインストールする際は、インストール先を明示してください。
 - 配色は VS Code Dark Modern の公式パレット（エディタ `#1F1F1F`、サイドバー等 `#181818`、境界線 `#2B2B2B`、入力欄 `#313131`、アクセント `#0078D4`）に合わせています。
 - Listing / Decompiler は選択中も構文の文字色を維持するため、コード選択には濃い青 `#193549`、検索には暗い黄土色を使います。一般の入力欄の選択色は `#264F78` です。変更済みバイトとデバッガの変更値は黄系 `#D7BA7D`、エラー文字は明るい赤 `#F48771` とし、エラーアイコンの赤と使い分けます。アドレスは行番号より明るく表示します。
 - Function Graph の通常フローは緑、条件分岐は黄、無条件分岐は青で、Program Graph と意味を揃えています。強調中の経路は白です。ビットフィールドの背景は文字が読める暗い色を使います。
@@ -177,10 +177,10 @@ rm -rf "$GHIDRA_USER_DIR/images/vscode/codicons"
 
 ## ビルドと検証
 
-生成スクリプトは `~/ghidra/` 以下の Ghidra 12.0.4 / 12.1.2 / 12.1.3 を探し、新しいバージョンの定義を優先します。別の場所にある場合は、`GHIDRA_DIRS` に Ghidra 本体のディレクトリを指定してください（ユーザー設定ディレクトリではありません）。複数指定する場合の区切りは macOS/Linux では `:`、Windows では `;` です。
+生成スクリプトは `~/ghidra/` 以下の Ghidra 12.0.4 / 12.1.2 / 12.1.3 / 12.1.4 を探し、新しいバージョンの定義を優先します。別の場所にある場合は、`GHIDRA_DIRS` に Ghidra 本体のディレクトリを指定してください（ユーザー設定ディレクトリではありません）。複数指定する場合の区切りは macOS/Linux では `:`、Windows では `;` です。
 
 ```sh
-GHIDRA_DIRS="/path/to/ghidra_12.1.3_PUBLIC" python3 tools/build-theme.py
+GHIDRA_DIRS="/path/to/ghidra_12.1.4_PUBLIC" python3 tools/build-theme.py
 CODICONS_SRC="/path/to/codicons/package/src/icons" ./tools/generate-icons.sh
 ./tools/build-theme-zip.sh
 python3 -m unittest discover -s tests -v
@@ -193,7 +193,7 @@ Codicons は同梱素材と同じ `@vscode/codicons` **0.0.45** を使用して�
 JDK とローカルの Ghidra がある場合は、実際の読込・描画処理でも検証できます。
 
 ```sh
-python3 tests/check_ghidra.py "/path/to/ghidra_12.1.3_PUBLIC"
+python3 tests/check_ghidra.py "/path/to/ghidra_12.1.4_PUBLIC"
 ```
 
 一時設定ディレクトリへ Ghidra の処理で ZIP を読み込み、状態アイコンの表示位置とアニメーションフレーム、専用アイコンの形の違い、不整合マークの重なり、閉じるアイコンのホバー表示を確認します。目視確認用の画像は `build/theme-check.png`、`build/icons-check.png`、`build/colors-check.png`、`build/windows-check.png` に出力します。いずれも画面外で描画したサンプルで、実画面のスクリーンショットではありません。ウィンドウ画像は見出しの配色サンプル、Ghidra の実際のタブ枠描画、標準 Swing タブを示します。OS のタイトルバーやドラッグ・リサイズ操作の検証は含みません。

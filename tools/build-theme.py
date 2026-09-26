@@ -2,7 +2,7 @@
 """Rebuild the icon.* block of the theme + the codicon render manifest.
 
 Pipeline:
-  1. Parse every Ghidra *.theme.properties (12.0.4 / 12.1.2 / 12.1.3) to learn the
+  1. Parse every Ghidra *.theme.properties (12.0.4 / 12.1.2 / 12.1.3 / 12.1.4) to learn the
      default icon each icon.* key resolves to.
   2. Map each key to a codicon PNG via tools/icon-map.py (by original icon
      basename), falling back to the current theme's choice so coverage never
@@ -62,7 +62,7 @@ def ghidra_dirs():
     else:
         base = os.path.join(os.path.expanduser("~"), "ghidra")
         dirs = [os.path.join(base, f"ghidra_{v}_PUBLIC")
-                for v in ("12.0.4", "12.1.2", "12.1.3")]
+                for v in ("12.0.4", "12.1.2", "12.1.3", "12.1.4")]
         dirs = [d for d in dirs if os.path.isdir(d)]
     if not dirs:
         raise ValueError("No Ghidra installation found. Set GHIDRA_DIRS to your Ghidra install directory.")
